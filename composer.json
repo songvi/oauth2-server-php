@@ -11,7 +11,7 @@
             "homepage":"http://brentertainment.com"
         }
     ],
-    "homepage": "http://github.com/bshaffer/oauth2-server-php",
+    "homepage": "http://github.com/songvi/oauth2-server-php",
     "autoload": {
         "psr-0": { "OAuth2": "src/" }
     },
