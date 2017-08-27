@@ -72,6 +72,7 @@ class IntrospectController implements IntrospectControllerInterface
         }
 
         // Token is valid return 200 with data
+        $response->addParameters(array('active' => true));
         $response->addParameters($tokenInfo);
         return $response;
 

@@ -14,6 +14,7 @@ use OAuth2\OpenID\GrantType\AuthorizationCode as OpenIDAuthorizationCodeGrantTyp
 use OAuth2\Controller\AuthorizeControllerInterface;
 use OAuth2\Controller\AuthorizeController;
 use OAuth2\Controller\TokenControllerInterface;
+use OAuth2\Controller\IntrospectControllerInterface;
 use OAuth2\Controller\TokenController;
 use OAuth2\ClientAssertionType\ClientAssertionTypeInterface;
 use OAuth2\ClientAssertionType\HttpBasic;
