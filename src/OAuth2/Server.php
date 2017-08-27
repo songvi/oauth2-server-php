@@ -2,6 +2,7 @@
 
 namespace OAuth2;
 
+use OAuth2\Controller\IntrospectController;
 use OAuth2\Controller\ResourceControllerInterface;
 use OAuth2\Controller\ResourceController;
 use OAuth2\OpenID\Controller\UserInfoControllerInterface;
@@ -48,7 +49,8 @@ use LogicException;
 class Server implements ResourceControllerInterface,
     AuthorizeControllerInterface,
     TokenControllerInterface,
-    UserInfoControllerInterface
+    UserInfoControllerInterface,
+    IntrospectControllerInterface
 {
     /**
      * @var ResponseInterface
@@ -84,6 +86,8 @@ class Server implements ResourceControllerInterface,
      * @var UserInfoControllerInterface
      */
     protected $userInfoController;
+
+    protected $introspectController;
 
     /**
      * @var array
@@ -242,6 +246,10 @@ class Server implements ResourceControllerInterface,
         return $this->userInfoController;
     }
 
+    public function getIntrospectController(){
+        return $this->createIntrospectController();
+    }
+
     /**
      * @param AuthorizeControllerInterface $authorizeController
      */
@@ -382,6 +390,13 @@ class Server implements ResourceControllerInterface,
         $this->getAuthorizeController()->handleAuthorizeRequest($request, $this->response, $is_authorized, $user_id);
 
         return $this->response;
+    }
+
+    public function handleIntrospectRequest(RequestInterface $request, ResponseInterface $response){
+        $this->response = $response;
+        $introspect = $this->getIntrospectController();
+        $introspect->validateIntrospectRequest($response, $response);
+        //validateIntrospectRequest
     }
 
     /**
@@ -668,6 +683,11 @@ class Server implements ResourceControllerInterface,
         $config = array_intersect_key($this->config, array('www_realm' => ''));
 
         return new UserInfoController($this->tokenType, $this->storages['access_token'], $this->storages['user_claims'], $config, $this->getScopeUtil());
+    }
+
+    protected function createIntrospectController(){
+        //ClientInterface $clientStorage, AccessTokenInterface $accessTokenStorage
+        return new IntrospectController($this->storages['client'], $this->storages['access_token']);
     }
 
     /**
