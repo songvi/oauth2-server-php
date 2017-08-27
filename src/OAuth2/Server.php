@@ -395,8 +395,14 @@ class Server implements ResourceControllerInterface,
     public function handleIntrospectRequest(RequestInterface $request, ResponseInterface $response){
         $this->response = $response;
         $introspect = $this->getIntrospectController();
-        $introspect->validateIntrospectRequest($response, $response);
-        //validateIntrospectRequest
+        $introspect->handleIntrospectRequest($request, $this->response);
+        return $this->response;
+    }
+
+    public function validateIntrospectRequest(RequestInterface $request, ResponseInterface $response){
+        $introspect = $this->getIntrospectController();
+        $this->response = $response;
+        return $introspect->validateIntrospectRequest($request, $this->response);
     }
 
     /**
